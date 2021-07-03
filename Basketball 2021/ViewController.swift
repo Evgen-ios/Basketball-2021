@@ -9,7 +9,7 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
     
     // MARK: - IBOutlets
     @IBOutlet var sceneView: ARSCNView!
@@ -24,7 +24,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     let configuration  = ARWorldTrackingConfiguration()
-    
     
     var isHoopAdded = false {
         didSet {
@@ -45,6 +44,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        
+        // Add Contact Delegate for world
+        sceneView.scene.physicsWorld.contactDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,13 +66,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
+    
+    
     // MARK: Private Methods
     private func getBall() -> SCNNode? {
         
         // Get curret frame
         guard let frame = sceneView.session.currentFrame else { return nil }
         
-        //Get camera transform
+        // Get camera transform
         let cameraTransform = frame.camera.transform
         let matrixCameraTransform = SCNMatrix4(cameraTransform)
         
@@ -94,33 +98,52 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Apply force
         ballNode.physicsBody?.applyForce(forceDirection, asImpulse: true)
         
-    
+        // Add 
+        ballNode.physicsBody?.categoryBitMask = 3
+        ballNode.physicsBody?.collisionBitMask = 1 | 2
+        //ballNode.physicsBody?.contactTestBitMask = 1 | 2
+        
         // Assing camera position to ball
         ballNode.simdTransform = frame.camera.transform
         
         return ballNode
     }
     
+    
+    
     private func getHoopNode() -> SCNNode {
         let scene = SCNScene(named: "Hoop.scn", inDirectory: "art.scnassets")!
         let hoopNode = scene.rootNode.clone()
-  
-        // Add physics body
-        let childNodes = hoopNode.childNodes
         
-        for index in childNodes {
-            index.physicsBody = SCNPhysicsBody(
-                type: .static,
-                shape: SCNPhysicsShape(
-                    node: index,
-                    options:[SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]
+        
+        // Add physics Score places
+        hoopNode.enumerateChildNodes { (node, _) in
+            if node.name == "scoreFirst" {
+                node.opacity = 0
+                node.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+                node.physicsBody?.categoryBitMask = 1
+                node.physicsBody?.collisionBitMask = 0
+                
+            } else if node.name == "scoreSecond" {
+                node.opacity = 0
+                node.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+                node.physicsBody?.categoryBitMask = 2
+                node.physicsBody?.collisionBitMask = 0
+                
+            } else {
+                // Add physics all places
+                node.physicsBody = SCNPhysicsBody(
+                    type: .static,
+                    shape: SCNPhysicsShape(
+                        node: node,
+                        options:[SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]
+                    )
                 )
-            )
+            }
+            
         }
-
-        // Rotate hoop node to make it vertical
-        hoopNode.eulerAngles.x -= .pi / 2
         
+        hoopNode.eulerAngles.x -= .pi / 2
         return hoopNode
     }
     
@@ -173,6 +196,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Update plane node
         updatePlaneNode(node, for: planeAnchor)
     }
+    
+    
+    
+    
+    // MARK: SCNPhysicsContactDelegate
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        
+        if (contact.nodeA.physicsBody?.categoryBitMask == 1 &&
+                contact.nodeB.physicsBody?.categoryBitMask == 3 &&
+                contact.nodeB.name != "ballTouchedTop") {
+            
+            contact.nodeB.name = "ballTouchedTop"
+            print(#line, #function, "Collision detected with scoreFirs!")
+            
+        } else if (contact.nodeA.physicsBody?.categoryBitMask == 2 &&
+                    contact.nodeB.physicsBody?.categoryBitMask == 3 &&
+                    contact.nodeB.name == "ballTouchedTop") {
+            
+            contact.nodeB.name = "ball"
+            print(#line, #function, "Wow!!! You done it!" )
+        }
+        
+    }
+    
+    
     
     // MARK: - IBActions
     @IBAction func userTapped(_ sender: UITapGestureRecognizer) {
