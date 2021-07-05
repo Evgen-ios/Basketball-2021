@@ -13,17 +13,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     // MARK: - IBOutlets
     @IBOutlet var sceneView: ARSCNView!
-    @IBOutlet weak var scoreLabel: UILabel!
     
-    // MARK: Private Properties
-    var score: Int = 0 {
-        didSet
-        {
-            scoreLabel.text = "СЧЕТ: \(self.score)"
+    // MARK: - Private Properties
+    let configuration  = ARWorldTrackingConfiguration()
+    var textNode =  SCNNode()
+    
+    // Score
+    var curretScore = 0 {
+        didSet {
+            if let textGeometry = textNode.geometry as? SCNText {
+                guard curretScore < 10 else {
+                    textGeometry.string = "\(curretScore)"
+                    return
+                }
+                textGeometry.string = "0\(curretScore)"
+            }
         }
     }
-    
-    let configuration  = ARWorldTrackingConfiguration()
     
     var isHoopAdded = false {
         didSet {
@@ -52,7 +58,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Detect vertical plane
+        // Detect vertical and horizontal plane
         configuration.planeDetection = [.vertical, .horizontal]
         
         // Run the view's session
@@ -66,9 +72,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.session.pause()
     }
     
-    
-    
-    // MARK: Private Methods
+    // MARK: - Private Methods
     private func getBall() -> SCNNode? {
         
         // Get curret frame
@@ -98,18 +102,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         // Apply force
         ballNode.physicsBody?.applyForce(forceDirection, asImpulse: true)
         
-        // Add 
+        
+        // Add
         ballNode.physicsBody?.categoryBitMask = 3
         ballNode.physicsBody?.collisionBitMask = 1 | 2
-        //ballNode.physicsBody?.contactTestBitMask = 1 | 2
+        ballNode.physicsBody?.contactTestBitMask = 1 | 2
         
         // Assing camera position to ball
         ballNode.simdTransform = frame.camera.transform
         
         return ballNode
     }
-    
-    
     
     private func getHoopNode() -> SCNNode {
         let scene = SCNScene(named: "Hoop.scn", inDirectory: "art.scnassets")!
@@ -130,8 +133,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 node.physicsBody?.categoryBitMask = 2
                 node.physicsBody?.collisionBitMask = 0
                 
+            } else if node.name == "scoreLabel" {
+                textNode = node
+                
             } else {
-                // Add physics all places
+                // Add physics all nodes
                 node.physicsBody = SCNPhysicsBody(
                     type: .static,
                     shape: SCNPhysicsShape(
@@ -197,10 +203,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         updatePlaneNode(node, for: planeAnchor)
     }
     
-    
-    
-    
-    // MARK: SCNPhysicsContactDelegate
+    // MARK: - SCNPhysicsContactDelegate
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         
         if (contact.nodeA.physicsBody?.categoryBitMask == 1 &&
@@ -216,11 +219,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             contact.nodeB.name = "ball"
             print(#line, #function, "Wow!!! You done it!" )
+            curretScore += 1
         }
         
     }
-    
-    
     
     // MARK: - IBActions
     @IBAction func userTapped(_ sender: UITapGestureRecognizer) {
