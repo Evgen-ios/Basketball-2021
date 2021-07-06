@@ -44,7 +44,7 @@
 		7A3ABEBB268A29F80010F8F6 = {
 			isa = PBXGroup;
 			children = (
-				7A7C306B26941781007BB148 /* Screeshots */,
+				7A7C306B26941781007BB148 /* Screenshots */,
 				7A3ABEC6268A29F80010F8F6 /* Basketball 2021 */,
 				7A3ABEC5268A29F80010F8F6 /* Products */,
 			);
@@ -72,13 +72,13 @@
 			path = "Basketball 2021";
 			sourceTree = "<group>";
 		};
-		7A7C306B26941781007BB148 /* Screeshots */ = {
+		7A7C306B26941781007BB148 /* Screenshots */ = {
 			isa = PBXGroup;
 			children = (
 				7A7C306D269417AD007BB148 /* Screenshot1.png */,
 				7A7C306C269417AD007BB148 /* Screenshot2.png */,
 			);
-			path = Screeshots;
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

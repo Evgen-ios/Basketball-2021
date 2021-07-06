@@ -7,6 +7,6 @@
 ![Screenshots](https://github.com/Evgen-ios/Basketball-2021/blob/main/Basketball%202021/Assets.xcassets/AppIcon.appiconset/216.png)
 
 ## Screenshots
-![Screenshots](https://github.com/Evgen-ios/Basketball-2021/blob/main/Screeshots/Screenshot1.png)
-![Screenshots](https://github.com/Evgen-ios/Basketball-2021/blob/main/Screeshots/Screenshot2.png)
+![Screenshots](https://github.com/Evgen-ios/Basketball-2021/blob/main/Screenshots/Screenshot1.png)
+![Screenshots](https://github.com/Evgen-ios/Basketball-2021/blob/main/Screenshots/Screenshot2.png)
 
