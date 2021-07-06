@@ -15,11 +15,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBOutlet var sceneView: ARSCNView!
     
     // MARK: - Private Properties
-    let configuration  = ARWorldTrackingConfiguration()
-    var textNode =  SCNNode()
+    private let configuration  = ARWorldTrackingConfiguration()
+    private var textNode =  SCNNode()
     
     // Score
-    var curretScore = 0 {
+    private var curretScore = 0 {
         didSet {
             if let textGeometry = textNode.geometry as? SCNText {
                 guard curretScore < 10 else {
@@ -31,7 +31,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
     
-    var isHoopAdded = false {
+    private var isHoopAdded = false {
         didSet {
             configuration.planeDetection = []
             sceneView.session.run(configuration, options: .removeExistingAnchors)
@@ -42,8 +42,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Set debug options
-        sceneView.debugOptions = [.showFeaturePoints]
+        // Set debug options
+        // sceneView.debugOptions = [.showFeaturePoints]
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -86,8 +86,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let ball = SCNSphere(radius: 0.125)
         ball.firstMaterial?.diffuse.contents = UIImage(named: "basketball")
         
+        
+        
         // Ball node
         let ballNode = SCNNode(geometry: ball)
+        
         
         // Add physics body
         ballNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ballNode))
@@ -101,7 +104,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         // Apply force
         ballNode.physicsBody?.applyForce(forceDirection, asImpulse: true)
-        
         
         // Add
         ballNode.physicsBody?.categoryBitMask = 3
@@ -117,7 +119,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     private func getHoopNode() -> SCNNode {
         let scene = SCNScene(named: "Hoop.scn", inDirectory: "art.scnassets")!
         let hoopNode = scene.rootNode.clone()
-        
         
         // Add physics Score places
         hoopNode.enumerateChildNodes { (node, _) in
@@ -137,6 +138,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 textNode = node
                 
             } else {
+                
                 // Add physics all nodes
                 node.physicsBody = SCNPhysicsBody(
                     type: .static,
@@ -194,6 +196,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         print(#line, #function, "Vertical plane found! \(planeAnchor)")
     }
     
+    
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else {
             return
@@ -249,11 +252,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let hoopeNode = getHoopNode()
             hoopeNode.simdTransform = result.worldTransform
             
-            //Rotate hope by 90
+            // Rotate hope by 90
             hoopeNode.eulerAngles.x -= .pi / 2
+            
+            // Set new position
+            hoopeNode.simdPosition.z -= .pi / 2
             
             isHoopAdded = true
             sceneView.scene.rootNode.addChildNode(hoopeNode)
         }
     }
 }
+

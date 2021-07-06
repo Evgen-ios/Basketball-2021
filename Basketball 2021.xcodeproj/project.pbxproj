@@ -13,7 +13,8 @@
 		7A3ABECF268A29F80010F8F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A3ABECD268A29F80010F8F6 /* Main.storyboard */; };
 		7A3ABED1268A29F90010F8F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A3ABED0268A29F90010F8F6 /* Assets.xcassets */; };
 		7A3ABED4268A29F90010F8F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A3ABED2268A29F90010F8F6 /* LaunchScreen.storyboard */; };
-		7AA641E926901A0D00BD8A4F /* CollisionObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA641E826901A0D00BD8A4F /* CollisionObjects.swift */; };
+		7A7C306E269417AD007BB148 /* Screenshot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A7C306C269417AD007BB148 /* Screenshot2.png */; };
+		7A7C306F269417AD007BB148 /* Screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A7C306D269417AD007BB148 /* Screenshot1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +26,8 @@
 		7A3ABED0268A29F90010F8F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A3ABED3268A29F90010F8F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7A3ABED5268A29F90010F8F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7AA641E826901A0D00BD8A4F /* CollisionObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionObjects.swift; sourceTree = "<group>"; };
+		7A7C306C269417AD007BB148 /* Screenshot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot2.png; sourceTree = "<group>"; };
+		7A7C306D269417AD007BB148 /* Screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +44,7 @@
 		7A3ABEBB268A29F80010F8F6 = {
 			isa = PBXGroup;
 			children = (
+				7A7C306B26941781007BB148 /* Screeshots */,
 				7A3ABEC6268A29F80010F8F6 /* Basketball 2021 */,
 				7A3ABEC5268A29F80010F8F6 /* Products */,
 			);
@@ -65,9 +68,17 @@
 				7A3ABED0268A29F90010F8F6 /* Assets.xcassets */,
 				7A3ABED2268A29F90010F8F6 /* LaunchScreen.storyboard */,
 				7A3ABED5268A29F90010F8F6 /* Info.plist */,
-				7AA641E826901A0D00BD8A4F /* CollisionObjects.swift */,
 			);
 			path = "Basketball 2021";
+			sourceTree = "<group>";
+		};
+		7A7C306B26941781007BB148 /* Screeshots */ = {
+			isa = PBXGroup;
+			children = (
+				7A7C306D269417AD007BB148 /* Screenshot1.png */,
+				7A7C306C269417AD007BB148 /* Screenshot2.png */,
+			);
+			path = Screeshots;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,8 +138,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A7C306E269417AD007BB148 /* Screenshot2.png in Resources */,
 				7A3ABECA268A29F80010F8F6 /* art.scnassets in Resources */,
 				7A3ABED4268A29F90010F8F6 /* LaunchScreen.storyboard in Resources */,
+				7A7C306F269417AD007BB148 /* Screenshot1.png in Resources */,
 				7A3ABED1268A29F90010F8F6 /* Assets.xcassets in Resources */,
 				7A3ABECF268A29F80010F8F6 /* Main.storyboard in Resources */,
 			);
@@ -143,7 +156,6 @@
 			files = (
 				7A3ABECC268A29F80010F8F6 /* ViewController.swift in Sources */,
 				7A3ABEC8268A29F80010F8F6 /* AppDelegate.swift in Sources */,
-				7AA641E926901A0D00BD8A4F /* CollisionObjects.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
